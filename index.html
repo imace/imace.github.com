@@ -1,0 +1,99 @@
+<!doctype html>
+<!-- The Time Machine GitHub pages theme was designed and developed by Jon Rohan, on Feb 7, 2012. -->
+<!-- Follow him for fun. http://twitter.com/jonrohan. Tail his code on http://github.com/jonrohan -->
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <link rel="stylesheet" href="stylesheets/stylesheet.css" media="screen"/>
+  <link rel="stylesheet" href="stylesheets/pygment_trac.css"/>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script type="text/javascript" src="javascripts/script.js"></script>
+
+  <title>Imace.github.com</title>
+  <meta name="description" content="">
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+</head>
+
+<body>
+
+  <div class="wrapper">
+    <header>
+      <h1 class="title">Imace.github.com</h1>
+    </header>
+    <div id="container">
+      <p class="tagline"></p>
+      <div id="main" role="main">
+        <div class="download-bar">
+        <div class="inner">
+          <a href="https://github.com/imace" class="code">View Imace.github.com on GitHub</a>
+        </div>
+        <span class="blc"></span><span class="trc"></span>
+        </div>
+        <article class="markdown-body">
+          <hr><p>layout: master
+title: 首页</p>
+
+<h2>
+<a name="full_posts-3" class="anchor" href="#full_posts-3"><span class="octicon octicon-link"></span></a>full_posts: 3</h2>
+
+<div>
+  <h2>
+<a name="%E6%9C%80%E6%96%B0%E5%8D%9A%E5%AE%A2%E6%9B%B4%E5%A4%9A" class="anchor" href="#%E6%9C%80%E6%96%B0%E5%8D%9A%E5%AE%A2%E6%9B%B4%E5%A4%9A"><span class="octicon octicon-link"></span></a><a href="atom.xml"><img src="/images/subscribe-icon.gif" alt="Subscribe"></a>最新博客（<a href="/blog.html">更多</a>）</h2>
+  
+{% for post in site.posts limit:page.full_posts %}
+  <div>
+    {{post.date | date_to_string}}
+    <h1>
+<a name="posttitle" class="anchor" href="#posttitle"><span class="octicon octicon-link"></span></a><a href="%7B%7Bpost.url%7D%7D">{{post.title}}</a>
+</h1>
+    <div>{{post.content}}</div>
+    <a href="%7B%7Bpost.url%7D%7D#disqus_thread">View Comments</a>
+  </div>
+{% endfor %}
+
+</div>
+
+<div>
+  <h2>
+<a name="%E8%81%94%E7%B3%BB%E6%96%B9%E5%BC%8F" class="anchor" href="#%E8%81%94%E7%B3%BB%E6%96%B9%E5%BC%8F"><span class="octicon octicon-link"></span></a>联系方式</h2>
+  <div>
+    <div>
+    <dl>
+<dt>邮件：</dt>
+      <dd>imace AT gmail DOT com </dd>
+
+      <dt>公司：</dt>
+      <dd><a href="http://imace.github.io" target="_blank" title="imace">imace.github.io</a></dd>
+
+    </dl>
+</div>
+  </div>
+
+</div>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="owner">
+
+      <p><a href="https://github.com/imace" class="avatar"><img src="https://0.gravatar.com/avatar/1eb08b6d27bc225efe782d254704cbf5?d=https%3A%2F%2Fidenticons.github.com%2F09c7aba4517b87d919dccdf4c08ac03b.png&amp;r=x&amp;s=60" width="48" height="48"/></a>View <a href="https://github.com/imace">imace</a> on <a href="https://www.github.com">GitHub</a></p>
+
+      </div>
+      <div class="creds">
+        <small>This page generated using <a href="https://pages.github.com/">GitHub Pages</a><br/>theme by <a href="https://twitter.com/jonrohan/">Jon Rohan</a></small>
+      </div>
+    </footer>
+  </div>
+  <div class="current-section">
+    <a href="#top">Scroll to top</a>
+    <a href="https://github.com/imace/imace.github.com/tarball/master" class="tar">tar</a><a href="https://github.com/imace/imace.github.com/zipball/master" class="zip">zip</a><a href="" class="code">source code</a>
+    <p class="name"></p>
+  </div>
+
+  
+</body>
+</html>
