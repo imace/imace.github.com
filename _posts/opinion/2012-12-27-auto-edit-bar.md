@@ -21,7 +21,7 @@ Google+和美丽说还有些不同的细节：
     <li>美丽说在工具栏收起之后，留有一个小按钮，其实当用户熟悉这个交互后，略显多余。</li>
 </ul>
 
-[BeiYuu]:    http://beiyuu.com  "BeiYuu"
+[Imace]:    http://imace.github.io  "Imace"
 [1]:    {{ page.url}}  ({{ page.title }})
 [2]: http://www.meilishuo.com/welcome
 [3]: https://itunes.apple.com/us/app/google+/id447119634?mt=8

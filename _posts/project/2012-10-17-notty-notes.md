@@ -29,8 +29,8 @@ description: 对于不满意确很需要的东西，只能自己动手，比如�
 
 怎样写这个插件，可以看我的教程：[Backbone.js的使用及Chrome插件开发][3]。
 
-[BeiYuu]:    http://beiyuu.com  "BeiYuu"
+[Imace]:    http://imace.github.io  "Imace"
 [1]:    {{ page.url}}  ({{ page.title }})
 [Notty]:    https://chrome.google.com/webstore/detail/notty-notes/ggbmjahbkbhakkfgjiggdclpmmpmhajn?hl=zh-CN "Notty Notes"
 [2]:    http://www.douban.com/people/JGuo/
-[3]:    http://beiyuu.com/backbone-js-chrome-extension/ "Backbone.js的使用及Chrome插件开发"
+[3]:    http://imace.github.io/backbone-js-chrome-extension/ "Backbone.js的使用及Chrome插件开发"

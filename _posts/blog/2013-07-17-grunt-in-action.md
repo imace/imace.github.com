@@ -420,7 +420,7 @@ Grunt的基本使用就是这些了，当然还有一些[搭建脚手架][23]等
     }
 
 
-[BeiYuu]:    http://beiyuu.com  "BeiYuu"
+[Imace]:    http://imace.github.io  "Imace"
 [Grunt]: http://gruntjs.com/
 [npm]: https://npmjs.org/
 [node]: http://nodejs.org/

@@ -25,7 +25,7 @@ category: opinion
 
 希望能有更多的PM、设计师和开发者认同，赶紧给自己的APP加上这个舒适的Feature吧！
 
-[BeiYuu]:    http://beiyuu.com  "BeiYuu"
+[Imace]:    http://imace.github.io  "Imace"
 [1]:    {{ page.url}}  ({{ page.title }})
 [Reeder]: http://reederapp.com/ipad/
 [Alien]: http://alienblue.org/

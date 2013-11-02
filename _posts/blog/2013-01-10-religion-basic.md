@@ -356,7 +356,7 @@ C - 代表东正教
 <li>如果你觉得太长没兴趣读，恩，我也这么觉得，整理的几周我快闷死了。</li>
 </ul>
 
-[BeiYuu]:    http://beiyuu.com  "BeiYuu"
+[Imace]:    http://imace.github.io  "Imace"
 [1]:    {{ page.url}}  ({{ page.title }})
 [Antisemitism]: http://zh.wikipedia.org/wiki/%E5%8F%8D%E7%8C%B6%E4%B8%BB%E7%BE%A9
 [Christianity]: http://zh.wikipedia.org/wiki/%E5%9F%BA%E7%9D%A3%E5%AE%97%E6%95%99

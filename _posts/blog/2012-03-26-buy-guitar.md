@@ -154,7 +154,7 @@ Elixir琴弦材质分两种：
 看完这篇博客，不知道对你认识和购买吉他有没有帮助，你也可以谈谈你的想法，多多交流罢。
 
 
-[BeiYuu]:    http://beiyuu.com  "BeiYuu"
+[Imace]:    http://imace.github.io  "Imace"
 [1]:    {{ page.url}}  ({{ page.title }})
 [2]: http://www.satriani.com/ "Joe Satriani"
 [3]: http://www.zhihu.com/question/19557418

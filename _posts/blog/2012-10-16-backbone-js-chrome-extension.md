@@ -496,7 +496,7 @@ Chrome Store上插件的发布很简单，把自己的插件按要求打包好�
 最后再广告一下我的[便签插件][Notty]吧，感谢[靖哥哥][26]帮我做宣传图：
 <a href="https://chrome.google.com/webstore/detail/notty-notes/ggbmjahbkbhakkfgjiggdclpmmpmhajn?hl=zh-CN" title="Notty Notes" target="_blank"><img src="/images/backbonechrome/notes-logo.jpg" alt="Notty Notes"></a>
 
-[BeiYuu]:    http://beiyuu.com  "BeiYuu"
+[Imace]:    http://imace.github.io  "Imace"
 [1]:    {{ page.url}}  ({{ page.title }})
 [2]:    http://backbonejs.org  "Backbone.js"
 [3]:    http://www.google.cn/intl/zh-CN/chrome/browser/  "Chrome Broswer"
