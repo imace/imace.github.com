@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!--
+    * Author:         Imace
+    -->
+    <meta charset="utf-8" />
+    <title>CSS3动画详解 | imace</title>
+    <meta name="author" content="Imace" />
+    <meta name="description" content="Imace's Blog" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="/css/default.css" type="text/css" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="alternate" type="application/atom+xml" title="Recent Entries" href="/atom.xml" />
+    <script src="/js/jquery-1.7.1.min.js" type="text/javascript"></script>
+</head>
+<body>
+
+    <div class="home-menu">
+        <div class="home-icon-con">
+            <a class="home-menu-icon" href="/">Imace</a>
+            <a class="home-follow" href="#" title="Contact Me">+</a>
+        </div>
+        <div class="home-contact">
+            <a href="http://weibo.com/beiyuu/" target="_blank" style="margin-left:-5px;"><img src="http://www.weibo.com/favicon.ico" alt="" width="25"/></a>
+            <a href="http://www.douban.com/people/beiyuu/" target="_blank" style="text-align:center;"><img src="http://www.douban.com/favicon.ico" alt="" width="22"/></a>
+            <a href="http://instagram.com/beiyuu/" target="_blank" style="text-align:right"><img src="http://d36xtkk24g8jdx.cloudfront.net/bluebar/00c6602/images/ico/favicon.ico" alt="" width="22"/></a>
+        </div>
+    </div>
+
+    <link rel="stylesheet" href="/js/prettify/prettify.css" />
+<style type="text/css">
+    body { background:#e8e8e8; }
+    @media screen and (max-width: 750px){
+        body { background:#fff; }
+    }
+    @media screen and (max-width: 1020px){
+        body { background:#fff; }
+    }
+</style>
+
+<div id="content">
+    <div class="entry">
+        <h1 class="entry-title"><a href="/css3-animation" title="CSS3动画详解">CSS3动画详解</a></h1>
+        <p class="entry-date">2013-08-24</p>
+        <h2>CSS3动画</h2>
+
+<p>有人认为CSS动画是做了js的事情，较真起来也算，只是已经抢占许多年了，早些年要实现鼠标滑过链接变色的基本效果，需要动用Java Applet，后来只需给HTML元素加事件<code>onclick=changecolor()</code>，再之后正如你所知，只要写<code>:hover</code>、<code>:focus</code>这样的伪类即可，同样的，现在有了CSS3动画。</p>
+
+<h4>CSS3动画的优势：</h4>
+
+<ul>
+    <li>写起来非常方便，不会js也没问题</li>
+    <li>有些动画js也不能很好的胜任，比如让一个元素在二维、三维空间旋转</li>
+    <li>运行效果流畅，让浏览器去优化性能</li>
+    <li>浏览器从底层优化动画序列，例如当tab不可见的时候，降低更新的频率提高整体性能</li>
+</ul>
+
+
+<h4>劣势：</h4>
+
+<ul>
+    <li>CSS3动画应用的范围还是有限</li>
+    <li>兼容性：对于增强体验的Feature来说，可以无视</li>
+</ul>
+
+
+<h3>可以做动画效果的属性</h3>
+
+<p>理论上来说，任何单独的CSS属性都可以做动画的效果，比如：</p>
+
+<ul>
+    <li><code>width</code>：10px 到 100px</li>
+    <li><code>padding</code>：0px 到 20px</li>
+    <li><code>color</code>：#F00 到 #00F</li>
+    <li><code>top</code>：0px 到 10px</li>
+    <li><code>border-radius</code>：3px 到 8px</li>
+    <li><code>transform</code>：rotate(0deg) 到 ratate(45deg)</li>
+</ul>
+
+
+<p>你也可以给<code>red</code>、<code>blue</code>这样的赋值的颜色属性加transition或animation，它会被自动转化为对应的RGB值。</p>
+
+<h3>不可以做动画效果的属性</h3>
+
+<p>看下面这些例子：</p>
+
+<pre><code>#container p {
+    display: none;
+    transition: all 3s ease;
+}
+
+#container:hover p {
+    display: block;
+}
+
+/**********************/
+
+#container p {
+    height: 0px;
+    transition: all 3s ease;
+}
+
+#container:hover p {
+    height: auto;
+}
+</code></pre>
+
+<p>属性从无到有或到不确定值，动画效果不会生效，因为浏览器不知道如何去做，对于元素从无到有，你可以选择<code>opacity</code>属性来处理。</p>
+
+<h2>CSS3 Transition</h2>
+
+<p>Transition是被用到最多的也是最简单的CSS3动画类型。如果要做一个10px宽的蓝色元素在3s后变成一个100px宽的红色元素的效果，Transition可以平滑实现，你只需要声明起始和终止这两个状态。</p>
+
+<p>Transition的触发也很简单，可以用<code>:hover</code>、<code>:focus</code>这样的伪类来触发，也可以通过改变元素的样式来触发。</p>
+
+<h3>transition的属性</h3>
+
+<h4>transition-property</h4>
+
+<p>transition-property用来声明transition会被应用到的属性。</p>
+
+<pre><code>#container p.one {
+    transition-property: color;
+}
+
+#container p.two {
+    transition-property: width;
+}
+
+#container p.three {
+    transition-property: color, width;
+}
+</code></pre>
+
+<p>如果你想应用到所有属性，那可以简单写作<code>all</code>，也可以通过<code>none</code>来关闭transition。</p>
+
+<h4>transition-duration</h4>
+
+<p>transition-duration用来声明动画持续的时长，可以是s也可以是ms</p>
+
+<pre><code>#container p.one {
+    transition-duration: 3s;
+}
+
+#container p.two {
+    transition-duration: 3000ms;
+}
+</code></pre>
+
+<h4>transition-timing-function</h4>
+
+<p>transition-timing-function声明了动画的缓动类型，有下面几个选项：</p>
+
+<ul>
+    <li><code>ease</code>：默认项，动画效果慢慢开始然后加速，到中点后再减速最后缓慢到达终点</li>
+    <li><code>ease-in-out</code>：与ease类似，加减速更柔和一些</li>
+    <li><code>ease-in</code>：开始比较慢，但是加速和停止曲线比较陡峭</li>
+    <li><code>ease-out</code>：开始较快，然后缓慢停止</li>
+    <li><code>linear</code>：线性平均速率，通常在color和opacity属性的变化上</li>
+</ul>
+
+
+<p>最后，还有<code>cubic-bezier</code>函数，可以自己创造更多更优美的缓动类型。</p>
+
+<h4>transition-delay</h4>
+
+<p>transition-delay声明了动画延迟开始的时间，很容易理解</p>
+
+<pre><code>#container p.one {
+    transition-delay: 0.5s;
+}
+
+#container p.two {
+    transition-delay: 500ms;
+}
+</code></pre>
+
+<h3>transition简写</h3>
+
+<p>上面介绍了transition的属性，他们也可以合并成一项，省去了许多拼写，当然也别忘记浏览器前缀：</p>
+
+<pre><code>#container p {
+    transition-property: all;
+    transition-duration: 3s;
+    transition-timing-function: ease-in-out;
+    transition-delay: 0.5s;
+}
+
+
+#element {
+    /* starting state styles */
+    color: #F00;
+    -webkit-transition: all 3s ease-in-out 0.5s;
+    transition: all 3s ease-in-out 0.5s;
+}
+
+#element:hover {
+    /* ending state styles */
+    color: #00F;
+}
+</code></pre>
+
+<h3>transition的高级用法</h3>
+
+<h4>不同的transition效果</h4>
+
+<p>看这样的例子：</p>
+
+<pre><code>p#animate {
+    color: #ff6;
+    transition: all 3s ease-in-out 0.5s;
+}
+
+p#animate:hover {
+    color: #0f0;
+    transform: scale(4);
+}
+</code></pre>
+
+<p>在这个例子中，当鼠标hover，元素在0.5s之后在3s内放大四倍，鼠标移开，需要同样的时间回到原来的状态。如果想要不同的效果，可以这样写：</p>
+
+<pre><code>p#animate {
+    color: #ff6;
+    transition: all 0.5s ease-in-out;
+}
+
+p#animate:hover {
+    color: #0f0;
+    transform: scale(4);
+    transition: all 3s ease-in-out 0.5s;
+}
+</code></pre>
+
+<h4>多个transition</h4>
+
+<p>需要给多个transition指定不同的效果时，<code>all</code>属性解决不了，可以这样写：</p>
+
+<pre><code>p#animate {
+    width: 10em;
+    background-color: #F00;
+    border-radius: 5px;
+    transition-property: width, border-radius, background-color;
+    transition-duration: 1s, 2s;
+    transition-timing-function:  ease, ease-out, linear;
+}
+
+p#animate:hover {
+    width: 20em;
+    background-color: #00F;
+    border-radius: 50%;
+}
+</code></pre>
+
+<p>注意其中的<code>transition-duration</code>只写了两个，那么第三个<code>transition-property</code>属性<code>background-color</code>就用循环到第一个，也就是说他的<code>transition-duration</code>值是<code>1s</code>。</p>
+
+<h3>transition示例</h3>
+
+<div id="transition1">
+#transition1 {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;width:350px;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;background-color:#1abc9c;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;transition-propety:width,background-color;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;transition-duration:.5s, 1s;<br>
+}<br>
+#transition1:hover {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;width:450px;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;background-color:#8e44ad;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;transition-duration:.5s, 3s;<br>
+}<br>
+</div>
+
+
+<h2>CSS3 Animation</h2>
+
+<h3>Animation和Transition的不同</h3>
+
+<ul>
+    <li>和transition一样都可以定义开始和结束状态，但是animation还可以指定更确定的中间状态</li>
+    <li>animation可以像transition一样被触发，也可以自动运行</li>
+    <li>animation可以无限循环的运行下去，也可以指定运行的次数</li>
+    <li>animation可以在顺序运行也可以反向运行</li>
+    <li>animatino写起来稍麻烦些，但是依然比js简单许多</li>
+</ul>
+
+
+<h3>定义keyframes</h3>
+
+<pre><code>@keyframes colorchange {
+    0%   { background-color: #00F; /* from: blue */ }
+    25%  { background-color: #F00; /* red        */ }
+    50%  { background-color: #0F0; /* green      */ }
+    75%  { background-color: #F0F; /* purple     */ }
+    100% { background-color: #00F; /* to: blue   */ }
+}
+
+@-webkit-keyframes colorchange {
+    0%   { background-color: #00F; /* from: blue */ }
+    25%  { background-color: #F00; /* red        */ }
+    50%  { background-color: #0F0; /* green      */ }
+    75%  { background-color: #F0F; /* purple     */ }
+    100% { background-color: #00F; /* to: blue   */ }
+}
+</code></pre>
+
+<p>在这个例子中，只是定义了<code>background-color</code>这一个属性，如有需要，可以换做其他。对于<code>0%</code>这个也可以用<code>from</code>关键字来替代，同样的可以用<code>to</code>来代替<code>100%</code>，过渡状态，你可以定义任何百分比，类似<code>12.5%</code>这样的也可以，不过就不用给自己找麻烦了吧。浏览器的<code>prefix</code>也不能少。</p>
+
+<h3>应用到元素</h3>
+
+<p>将<code>animation</code>应用到元素的属性写法，和<code>transition</code>差不太多，顺序都一致，就不在一个个参数重复说明，直接看代码吧：</p>
+
+<pre><code>#myelement {
+    animation-name: colorchange; /**这里引用了前面定义的动画**/
+    animation-duration: 5s;
+    animation-timing-function: linear;
+    animation-delay: 1s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+/****简写****/
+#myelement {
+    -webkit-animation: colorchange 5s linear 1s infinite alternate;
+    animation: colorchange 5s linear 1s infinite alternate;
+}
+</code></pre>
+
+<p><code>animation-iteration-count</code>用来指定动画循环的次数，无限循环用<code>infinite</code>。</p>
+
+<p>animation-direction有四个值：</p>
+
+<ul>
+    <li><code>normal</code>：默认，从0%执行到100%</li>
+    <li><code>reverse</code>：动画从100%执行到0%</li>
+    <li><code>alternate</code>：动画在0%到100%之间往复执行</li>
+    <li><code>alternate-reverse</code>与<code>alternate</code>一致，不过是从100%开始</li>
+</ul>
+
+
+<h3>Animation示例</h3>
+
+<div id="ani1">Animate color</div>
+
+
+<h2>CSS3 Transform</h2>
+
+<p>有了<code>transition</code>和<code>animation</code>之后，就可以做出些漂亮的动画效果，如果再搭配<code>transform</code>这一CSS3动画利器，就更出彩了。</p>
+
+<h3>CSS3 2D Transform</h3>
+
+<p>运用CSS3 2D Transform的技术，可以更自由轻松的来修饰HTML元素。CSS3 2D Transform的基本方法有下面这些：</p>
+
+<ul>
+    <li><code>translate()</code></li>
+    <li><code>rotate()</code></li>
+    <li><code>scale()</code></li>
+    <li><code>skew()</code></li>
+    <li><code>matrix()</code></li>
+</ul>
+
+
+<h4>Translate</h4>
+
+<p>使用<code>translate()</code>方法，可以将HTML元素在x-y轴平面上做位移，且不会影响到其他元素。</p>
+
+<pre><code>div{
+    -webkit-transform: translate(20px,20px);
+    -moz-transform: translate(20px,20px);
+    -o-transform: translate(20px,20px);
+    transform: translate(20px,20px);
+}
+</code></pre>
+
+<p>效果如下：</p>
+
+<div id="translate1">
+<div id="trans-inner1">Normal Div</div>
+<div id="trans-inner2">transform:tranlated(40px, 40px)</div>
+</div>
+
+
+<h4>Rotate</h4>
+
+<p><code>rotate()</code>方法可以将元素按照时钟方向旋转，参数可以是<code>0deg</code>到<code>360deg</code>，也是在x-y轴平面，示例如下：</p>
+
+<div id="rotate1">
+<div id="rota-inner1">Normal Div</div>
+<div id="rota-inner2">transform:rotate(-30deg)</div>
+</div>
+
+
+<h4>Scale</h4>
+
+<p>和名字的一样，<code>scale()</code>方法用来放大一个元素，依然是在x-y轴平面，看示例：</p>
+
+<div id="scale1">
+    <div id="sca-inner1">Normal Div</div>
+    <div id="sca-inner2">transform:scale(1.5,1.3)</div>
+</div>
+
+
+<h4>Skew</h4>
+
+<p><code>skew()</code>方法可以将元素按照指定参数进行扭曲，你需要指定x、y轴的扭曲角度，看示例：</p>
+
+<div id="skew1">
+<div id="sk-inner1">Normal Div</div>
+<div id="sk-inner2">transform:skew(30deg,0)</div>
+</div>
+
+
+<h4>Matrix</h4>
+
+<p><code>matrix()</code>方法是以上所有2D效果的方法的总和，写法如下：</p>
+
+<pre><code>div{
+    transform: matrix(a,b,c,d,tx,ty);
+}
+</code></pre>
+
+<p>本质上<code>scale</code>、<code>skew</code>、<code>rotate</code>、<code>translate</code>的效果都是通过<code>matrix</code>实现的，<code>tx</code>、<code>ty</code>表示位移量，关于<code>matrix</code>方法更详细的介绍可以参考这里：<a href="http://www.zhangxinxu.com/wordpress/2012/06/css3-transform-matrix-%E7%9F%A9%E9%98%B5/">理解CSS3 transform中的Matrix(矩阵)</a></p>
+
+<h3>CSS3 3D Transform</h3>
+
+<p>了解了2D Transform之后，3D Transform的概念也不会太难，他给HTML元素在x-y平面加上了z轴，我们一个个来看看：</p>
+
+<ul>
+    <li><code>translate3d(tx,ty,tz)</code>：他定义了一个3D的位移方法，增加了z轴的偏移量</li>
+    <li><code>translateZ(tz)</code>：这个方法只在Z轴偏移，与<code>translateX()</code>和<code>translateY()</code>相似</li>
+    <li><code>scale3d(sx,sy,sz)</code>：在原有的<code>scale</code>方法上增加了z轴的参数</li>
+    <li><code>scaleZ(sz)</code>：同理，只放大z轴，与<code>scaleX()</code>和<code>scaleY()</code>类似</li>
+    <li><code>rotate3d(rx,ry,rz)</code>：将元素以给定参数的某一个轴方向旋转</li>
+    <li><code>rotateX(angle)，rotateY(angle)</code>和<code>rotateZ(angle)</code>：只按照某一个轴旋转，<code>rotate3d(1,0,0,30deg)</code>相当于<code>rotateX(30deg)</code>，其他类推。</li>
+</ul>
+
+
+<p>来看看例子：</p>
+
+<div class="transform-con">
+<div id="trans-3" class="inner">
+width:100%;<br>
+height:100%;<br>
+transform: translateZ(-200px);
+</div>
+</div>
+
+
+
+
+<div class="transform-con">
+<div id="trans-31" class="inner">
+width:100%;<br>
+height:100%;<br>
+transform: translateZ(100px);
+</div>
+</div>
+
+
+
+
+<div class="transform-con">
+<div id="rotate-31" class="inner">
+width:100%;<br>
+height:100%;<br>
+transform: rotateX(45deg);
+</div>
+</div>
+
+
+<div class="transform-con">
+<div id="rotate-32" class="inner">
+width:100%;<br>
+height:100%;<br>
+transform: rotateY(45deg);
+</div>
+</div>
+
+
+<div class="transform-con">
+<div id="rotate-33" class="inner">
+width:100%;<br>
+height:100%;<br>
+transform: rotateZ(45deg);
+</div>
+</div>
+
+
+<p>任何有3D变换的元素，不论最后只是做了2D的变换，或者什么都没做<code>translate3d(0,0,0)</code>，都会触发浏览器去计算。不过，以后会更新优化也不一定。</p>
+
+<h3>Perspective</h3>
+
+<p>激活元素的3D空间，需要<code>perspective</code>属性，写法有两种：</p>
+
+<pre><code>transform: perspective( 600px );
+/**或者**/
+perspective: 600px;
+</code></pre>
+
+<p>这两种不同写法，当应用元素只有一个时候，并没有区别，当有多个元素的时候，我们看看效果：</p>
+
+<pre><code>#pers-red .item{
+  background: red;
+  transform: perspective( 400px ) rotateY(45deg);
+}
+</code></pre>
+
+<div class="pers-con" id="pers-red">
+<div class="item">&nbsp;</div>
+<div class="item">&nbsp;</div>
+<div class="item">&nbsp;</div>
+<div class="item">&nbsp;</div>
+<div class="item">&nbsp;</div>
+<div class="item">&nbsp;</div>
+<div class="item">&nbsp;</div>
+<div class="item">&nbsp;</div>
+<div class="item">&nbsp;</div>
+</div>
+
+
+<pre><code>#pers-blue {
+  perspective: 400px;
+}
+
+#pers-blue .item{
+  background: blue;
+  transform: rotateY( 45deg );
+}
+</code></pre>
+
+<div class="pers-con" id="pers-blue">
+<div class="item">&nbsp;</div>
+<div class="item">&nbsp;</div>
+<div class="item">&nbsp;</div>
+<div class="item">&nbsp;</div>
+<div class="item">&nbsp;</div>
+<div class="item">&nbsp;</div>
+<div class="item">&nbsp;</div>
+<div class="item">&nbsp;</div>
+<div class="item">&nbsp;</div>
+</div>
+
+
+<p>上面这两种写法，都触发了元素的3D行为，函数型的写法<code>transform:perspective(400px)</code>适用于单个元素，会对每一个元素做3D视图的变换，而<code>perspective:400px</code>的写法，需写在父元素上，然后以父元素的视角，对多个子元素进行3D变换，多个子元素共享同一个3D空间，可以自己打开console修改感受一下。</p>
+
+<p><code>perspective</code>的参数值，决定了3D效果的强烈程度，可以想象为距离多远去观察元素。值越大，观察距离就越远，同样的旋转值，看起来效果就弱一些；值越小，距离越近，3D效果就更强烈。</p>
+
+<h4>perspective-orgin</h4>
+
+<p>通常，对一个元素进行3D变换的时候，变换点都是元素的中心点，如果你想以其他的位置为变换点，那就可以用这个属性来做调整：</p>
+
+<pre><code>perspective-orgin: 20% 70%;
+</code></pre>
+
+<p>这个是默认值的<code>perspective-orign:50% 50%</code>：</p>
+
+<div id="transform1">
+<div class="inner">
+<img src="http://lorempixel.com/150/150/city" alt="Nature">
+<img src="http://lorempixel.com/150/150/food" alt="Nature">
+<img src="http://lorempixel.com/150/150/people" alt="Nature">
+</div>
+</div>
+
+
+<p>这个是<code>perspective-orgin: 0% 50%;</code></p>
+
+<div id="transform1" sytle="-webkit-perspective-origin:0% 50%;perspective-origin:0% 50%">
+<div class="inner">
+<img src="http://lorempixel.com/150/150/nature" alt="Nature">
+<img src="http://lorempixel.com/150/150/animals" alt="Nature">
+<img src="http://lorempixel.com/150/150/abstract" alt="Nature">
+</div>
+</div>
+
+
+<h4>transform-style</h4>
+
+<p>这个参数用来共享父元素的3D空间，这样说起来有些抽象，下面第一个翻卡片的例子中会讲到。</p>
+
+<h4>backface-visibility</h4>
+
+<p>backface-visibility 属性可用于隐藏内容的背面。默认情况下，背面可见，这意味着即使在翻转后，变换的内容仍然可见。但当 backface-visibility 设置为 hidden 时，旋转后内容将隐藏，因为旋转后正面将不再可见。该功能可帮助你模拟多面的对象，例如下例中使用的卡片。通过将 backface-visibility 设置为 hidden，可以确保只有正面可见。</p>
+
+<h2>CSS3 动画实例</h2>
+
+<p>下面例子中的代码，为了方便查看都没有写浏览器前缀，也没有加入其他的修饰属性，所以实际应用时，不要忘记哦，当然也可以直接console查看。</p>
+
+<h3>CSS3 翻纸牌</h3>
+
+<p>做一个翻纸牌的效果，结构很简单：</p>
+
+<pre><code>&lt;div id="cardflip"&gt;
+  &lt;div id="card1"&gt;
+    &lt;div class="front"&gt;1&lt;/div&gt;
+    &lt;div class="back"&gt;2&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+
+<p><code>.cardflip</code>是整个3D效果的容器，<code>#card1</code>是翻转效果的元素，<code>.front</code>和<code>.back</code>是翻转的两面。添加样式：</p>
+
+<pre><code>#cardflip {
+    width: 200px;
+    height: 260px;
+    position: relative;
+    perspective: 800px;
+}
+
+#card1 {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    transform-style: preserve-3d;
+    transition: transform 1s;
+}
+</code></pre>
+
+<p>首先给<code>#cardflip</code>添加<code>perspective</code>属性，这样才能触发3D变换，之后<code>#card1</code>就在父元素的3D空间中了，用了<code>absolute</code>来定位子元素，设置宽高都是<code>100%</code>，这样就可以让<code>transform-origin</code>在元素的中心点，这个后面再讨论。</p>
+
+<p><code>transform-style</code>有两个值，一个是默认的<code>flat</code>一个是<code>preserve-3d</code>，由于<code>perspective</code>的3D空间，只能作用于直接的子元素，那么<code>.front</code>和<code>.back</code>也需要<code>#cardflip</code>的3D空间的话，就需要给<code>#card1</code>添加这个属性，</p>
+
+<pre><code>#card1 div{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+}
+</code></pre>
+
+<p>只有<code>#card1 div</code>元素共享了外层元素的3D空间之后，3D变换的属性才能生效，这时候的<code>backface-visibility</code>才有效，设置为<code>hidden</code>。</p>
+
+<pre><code>#card1 .front {
+    background: red;
+}
+
+#card1 .back {
+    background: blue;
+    transform: rotateY( 180deg );
+}
+
+#card1.flipped {
+    transform: rotateY( 180deg );
+}
+</code></pre>
+
+<p>因为设置了<code>backface-visibility</code>，而<code>.back</code>默认就是以Y轴旋转了180度，空间想象一下，<code>.back</code>就转到背面去了，所以<code>hidden</code>属性生效，就看不到<code>.back</code>了。</p>
+
+<p>当<code>#card1</code>添加了<code>.flipped</code>的样式，<code>#card1</code>以Y轴旋转了180度，这时候<code>.front</code>转到了背面，而<code>.back</code>从背面转到了前面，所以就完成了切换。这一段需要仔细的想一想。好了，看看下面的实例，点击即可翻转：</p>
+
+<div id="cardflip">
+<div id="card1">
+<div class="front">1</div>
+<div class="back">2</div>
+</div>
+</div>
+
+
+<p>我们再给这个翻转加一些偏移的效果，看起来会不那么生硬。这就用到了<code>transform-origin</code>，这个参数：</p>
+
+<pre><code>#card1 { transform-origin: left center; }
+
+#card1.flipped {
+  transform: translateX( 100% ) rotateY( 180deg );
+}
+</code></pre>
+
+<p>默认的<code>transform-origin</code>是<code>center center</code>，我们改成<code>left center</code>之后，就不再以元素的x方向的中心为轴旋转，而是以元素的左边为Y轴旋转，所以还需要给整个<code>#card1</code>加一个位移量<code>translate</code>，值是<code>100%</code>，就是元素本身的宽度。</p>
+
+<p>可以在console里面去掉<code>#card1.flipped</code>的<code>translate</code>帮助理解。</p>
+
+<div id="cardflip1">
+<div id="card2">
+<div class="front">1</div>
+<div class="back">2</div>
+</div>
+</div>
+
+
+<p>这里有一点需要注意，当元素在z轴上有了位移，或者朝向负角度旋转，会导致元素在页面上无法被鼠标点击到，想像一下3D空间，这个元素已经位于整个页面平面的<strong>里面</strong>，所以无法触及了。</p>
+
+<h3>CSS3 立方体</h3>
+
+<p>做完了反转卡片的效果，肯定还想做更炫的，来试试做一个立方体吧：</p>
+
+<pre><code>&lt;section id="cube-con"&gt;
+  &lt;div id="cube"&gt;
+    &lt;figure class="front"&gt;1&lt;/figure&gt;
+    &lt;figure class="back"&gt;2&lt;/figure&gt;
+    &lt;figure class="right"&gt;3&lt;/figure&gt;
+    &lt;figure class="left"&gt;4&lt;/figure&gt;
+    &lt;figure class="top"&gt;5&lt;/figure&gt;
+    &lt;figure class="bottom"&gt;6&lt;/figure&gt;
+  &lt;/div&gt;
+&lt;/section&gt;
+
+#cube-con {
+    width: 200px;
+    height: 200px;
+    position: relative;
+    perspective: 1000px;
+}
+
+#cube {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    transform-style: preserve-3d;
+}
+
+#cube figure {
+    width: 196px;
+    height: 196px;
+    display: block;
+    position: absolute;
+    border: 2px solid black;
+}
+</code></pre>
+
+<p>这一部分和上一个例子没有太大的差别，应该都能理解每一个属性的含义了。</p>
+
+<pre><code>#cube .front  { transform: rotateY(   0deg ) translateZ( 100px ); }
+#cube .back   { transform: rotateX( 180deg ) translateZ( 100px ); }
+#cube .right  { transform: rotateY(  90deg ) translateZ( 100px ); }
+#cube .left   { transform: rotateY( -90deg ) translateZ( 100px ); }
+#cube .top    { transform: rotateX(  90deg ) translateZ( 100px ); }
+#cube .bottom { transform: rotateX( -90deg ) translateZ( 100px ); }
+</code></pre>
+
+<p>立方体的每一个面，经过<code>rotate</code>旋转之后，就放置在了他该被放置的地方，但是这时候会发现，这些层叠加在一起，还没有成为一个立方体，这时候需要给Z轴一个位移，想象一下我们的视角点在<code>#cube</code>正中间，拉伸z轴之后，<code>.right</code>、<code>left</code>等面就会有一定的角度，参考画画时候的透视，因为刚好在中心点，所以位移量就是宽度的一半。分步过程可以看<a href="http://desandro.github.io/3dtransforms/examples/cube-01-steps.html">这里</a>。</p>
+
+<p>因为z轴拉伸之后，原来的对象会被放大一些，这样就会模糊掉，为了去掉这个影响，我们需要把立方体再推回原来的视角平面，于是：</p>
+
+<pre><code>#cube { transform: translateZ( -100px ); }
+</code></pre>
+
+<p>完成了立方体，想让某个面旋转到前方，只需转动整个立方体，不用去调整每个面：</p>
+
+<pre><code>#cube.show-front  { transform: translateZ( -100px ) rotateY(    0deg ); }
+#cube.show-back   { transform: translateZ( -100px ) rotateX( -180deg ); }
+#cube.show-right  { transform: translateZ( -100px ) rotateY(  -90deg ); }
+#cube.show-left   { transform: translateZ( -100px ) rotateY(   90deg ); }
+#cube.show-top    { transform: translateZ( -100px ) rotateX(  -90deg ); }
+#cube.show-bottom { transform: translateZ( -100px ) rotateX(   90deg ); }
+
+/**还有过渡效果**/
+#cube { transition: transform 1s; }
+</code></pre>
+
+<p><section id="cube-con"></p>
+
+<div id="cube">
+<figure class="front">1</figure>
+<figure class="back">2</figure>
+<figure class="right">3</figure>
+<figure class="left">4</figure>
+<figure class="top">5</figure>
+<figure class="bottom">6</figure>
+</div>
+
+
+<p></section></p>
+
+<div id="cube-btn">
+<button data-class="show-front">Show Front</button>
+<button data-class="show-back">Show Back</button>
+<button data-class="show-right">Show Right</button>
+<button data-class="show-left">Show Left</button>
+<button data-class="show-top">Show Top</button>
+<button data-class="show-bottom">Show Bottom</button>
+</div>
+
+
+<h3>3D 旋转跑马灯</h3>
+
+<p>做幻灯片展示的方法有很多，我们用CSS3的3D技术来试试看：</p>
+
+<pre><code>&lt;section class="container"&gt;
+  &lt;div id="carousel"&gt;
+    &lt;figure&gt;1&lt;/figure&gt;
+    &lt;figure&gt;2&lt;/figure&gt;
+    &lt;figure&gt;3&lt;/figure&gt;
+    &lt;figure&gt;4&lt;/figure&gt;
+    &lt;figure&gt;5&lt;/figure&gt;
+    &lt;figure&gt;6&lt;/figure&gt;
+    &lt;figure&gt;7&lt;/figure&gt;
+    &lt;figure&gt;8&lt;/figure&gt;
+    &lt;figure&gt;9&lt;/figure&gt;
+  &lt;/div&gt;
+&lt;/section&gt;
+
+.container {
+  width: 210px;
+  height: 140px;
+  position: relative;
+  perspective: 1000px;
+}
+
+#carousel {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  transform-style: preserve-3d;
+}
+
+#carousel figure {
+  display: block;
+  position: absolute;
+  width: 186px;
+  height: 116px;
+  left: 10px;
+  top: 10px;
+  border: 2px solid black;
+}
+</code></pre>
+
+<p>上面这一段，没什么特别要说明的，基本的结构样式，以及之前重点说明过的<code>perspective</code>和<code>preserve-3d</code>。现在有9个卡片，要环绕成一圈，那么每个的角度就是<code>40deg</code> （360/90）。</p>
+
+<pre><code>#carousel figure:nth-child(1) { transform: rotateY(   0deg ); }
+#carousel figure:nth-child(2) { transform: rotateY(  40deg ); }
+#carousel figure:nth-child(3) { transform: rotateY(  80deg ); }
+#carousel figure:nth-child(4) { transform: rotateY( 120deg ); }
+#carousel figure:nth-child(5) { transform: rotateY( 160deg ); }
+#carousel figure:nth-child(6) { transform: rotateY( 200deg ); }
+#carousel figure:nth-child(7) { transform: rotateY( 240deg ); }
+#carousel figure:nth-child(8) { transform: rotateY( 280deg ); }
+#carousel figure:nth-child(9) { transform: rotateY( 320deg ); }
+</code></pre>
+
+<p>好了，和立方体的例子到同样的步骤了，现在所有的卡片做了Y轴旋转，但因为观察的视角点没有变，所以看起来还是平面，如下这样：</p>
+
+<p><img src="http://ww3.sinaimg.cn/large/8b8af2c8jw1e84s4cel0uj208e05raa0.jpg" alt="caro" /></p>
+
+<p>立方体的位移很好计算，只要是宽度、高度、或者深度的一半就可以了，这个旋转的跑马灯应该怎么计算呢？</p>
+
+<p><img src="http://ww1.sinaimg.cn/large/8b8af2c8jw1e84s5efyxej20f00b6aaj.jpg" alt="caro-cmpu" /></p>
+
+<p>从旋转跑马灯的上方观察，每个卡片的宽度是<code>210px</code>，角度是<code>40deg</code>，要计算到中心点的距离，根据旁边的三角形可得：</p>
+
+<pre><code>r = 105 / tan(20deg) = 288px
+</code></pre>
+
+<p>所以：</p>
+
+<pre><code>#carousel figure:nth-child(1) {transform:rotateY(  0deg) translateZ(288px);}
+#carousel figure:nth-child(2) {transform:rotateY( 40deg) translateZ(288px);}
+#carousel figure:nth-child(3) {transform:rotateY( 80deg) translateZ(288px);}
+#carousel figure:nth-child(4) {transform:rotateY(120deg) translateZ(288px);}
+#carousel figure:nth-child(5) {transform:rotateY(160deg) translateZ(288px);}
+#carousel figure:nth-child(6) {transform:rotateY(200deg) translateZ(288px);}
+#carousel figure:nth-child(7) {transform:rotateY(240deg) translateZ(288px);}
+#carousel figure:nth-child(8) {transform:rotateY(280deg) translateZ(288px);}
+#carousel figure:nth-child(9) {transform:rotateY(320deg) translateZ(288px);}
+</code></pre>
+
+<p>知道了计算方法，如果要改变卡片的个数，或者宽度，只要按照那个公式再计算就好：</p>
+
+<pre><code>var tz = Math.round( ( panelSize / 2 ) / 
+  Math.tan( ( ( Math.PI * 2 ) / numberOfPanels ) / 2 ) );
+// or simplified to
+var tz = Math.round( ( panelSize / 2 ) / 
+  Math.tan( Math.PI / numberOfPanels ) );
+</code></pre>
+
+<p>计算好卡片的位置之后，然后旋转<code>#carousel</code>就可以了，当然这个要用js来控制了：</p>
+
+<pre><code>#carousel{
+    transform: translateZ( -288px ) rotateY( -160deg );
+}
+</code></pre>
+
+<p>js代码如下：</p>
+
+<pre><code>$(function(){
+    $('#car-pre').click(function(){
+        var deg = $('#carousel').attr('data-deg') || 0;
+        deg = parseInt(deg)+40;
+
+        var value = 'translateZ(-288px) rotateY('+deg+'deg)';
+
+        $('#carousel')
+            .attr('data-deg',deg)
+            .css({
+                '-webkit-transform':value
+                ,'-moz-transform':value
+                ,'-o-transform':value
+                ,'transform':value
+            });
+    });
+    $('#car-next').click(function(){
+        var deg = $('#carousel').attr('data-deg') || 0;
+        deg = parseInt(deg)-40;
+
+        var value = 'translateZ(-288px) rotateY('+deg+'deg)';
+
+        $('#carousel')
+            .attr('data-deg',deg)
+            .css({
+                '-webkit-transform':value
+                ,'-moz-transform':value
+                ,'-o-transform':value
+                ,'transform':value
+            });
+    });
+</code></pre>
+
+<p><section id="caro-con"><div id="carousel"><figure>1</figure><figure>2</figure><figure>3</figure><figure>4</figure><figure>5</figure><figure>6</figure><figure>7</figure><figure>8</figure><figure>9</figure></div></section></p>
+
+<div id="car-btn">
+<button id="car-pre">&lt; Prev</button>
+<button id="car-next">Next &gt;</button>
+</div>
+
+
+<h2>结语</h2>
+
+<p>终于完成了这篇，梳理的过程对我自己很有提高，希望对你也能有些帮助，有兴趣可以关注我，期待下以后的博客~</p>
+
+
+        <div id="disqus_container">
+            <div style="margin-bottom:20px" class="right">
+                <script type="text/javascript" charset="utf-8">
+                (function(){
+                  var _w = 86 , _h = 16;
+                  var param = {
+                    url:location.href,
+                    type:'6',
+                    count:'', /**是否显示分享数，1显示(可选)*/
+                    appkey:'', /**您申请的应用appkey,显示分享来源(可选)*/
+                    title:'', /**分享的文字内容(可选，默认为所在页面的title)*/
+                    pic:'', /**分享图片的路径(可选)*/
+                    ralateUid:'1855270953', /**关联用户的UID，分享微博会@该用户(可选)*/
+                    language:'zh_cn', /**设置语言，zh_cn|zh_tw(可选)*/
+                    rnd:new Date().valueOf()
+                  }
+                  var temp = [];
+                  for( var p in param ){
+                    temp.push(p + '=' + encodeURIComponent( param[p] || '' ) )
+                  }
+                  document.write('<iframe allowTransparency="true" frameborder="0" scrolling="no" src="http://hits.sinajs.cn/A1/weiboshare.html?' + temp.join('&') + '" width="'+ _w+'" height="'+_h+'"></iframe>')
+                })()
+                </script>
+            </div>
+            <a href="#" class="comment" onclick="return false;">点击查看评论</a>
+            <div id="disqus_thread"></div>
+        </div>
+    </div>
+
+    <div class="sidenav">
+        <iframe width="100%" height="75" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=75&fansRow=2&ptype=1&speed=0&skin=5&isTitle=0&noborder=0&isWeibo=0&isFans=0&uid=1855270953&verifier=375b89d6&dpc=1"></iframe>
+    </div>
+
+    <div class="sidenav">
+        <h2>Blog</h2>
+        <ul class="artical-list">
+        
+            <li><a href="/git-update">github网站的目录结构</a></li>
+        
+            <li><a href="/css3-animation">CSS3动画详解</a></li>
+        
+            <li><a href="/grunt-in-action">Grunt.js 在前端项目中的实战</a></li>
+        
+            <li><a href="/readable-code">编写可读代码的艺术</a></li>
+        
+            <li><a href="/religion-basic">宗教基本知识</a></li>
+        
+            <li><a href="/git-vim-tutorial">Git时代的VIM不完全使用教程</a></li>
+        
+            <li><a href="/backbone-js-chrome-extension">使用Backbone.js开发Chrome便签插件</a></li>
+        
+            <li><a href="/buy-guitar">如何选择与购买吉他</a></li>
+        
+            <li><a href="/github-pages">使用Github Pages建独立博客</a></li>
+        
+            <li><a href="/why-blog">我为什么写博客？</a></li>
+        
+        </ul>
+
+        <h2>Opinion</h2>
+        <ul class="artical-list">
+        
+            <li><a href="/douban-fm">豆瓣FM(iOS 3.0)使用体会</a></li>
+        
+            <li><a href="/jobs-interview">史蒂夫·乔布斯：遗失的访谈</a></li>
+        
+            <li><a href="/40-ama-55-grammy">40届全美音乐奖和55届格莱美颁奖演出观感</a></li>
+        
+            <li><a href="/build-facebook">只有好的棋手才会走运</a></li>
+        
+            <li><a href="/bad-list-design">令人焦虑的列表设计</a></li>
+        
+            <li><a href="/about-simplify">胡言乱语说简单</a></li>
+        
+            <li><a href="/auto-edit-bar">随内容滚动隐藏的工具栏</a></li>
+        
+            <li><a href="/side-slide">如果侧滑成为APP标配</a></li>
+        
+            <li><a href="/needs-video">谈谈刚需和360影视</a></li>
+        
+        </ul>
+
+        <h2>Project</h2>
+        <ul class="artical-list">
+        
+            <li><a href="/tabby">Tabby</a></li>
+        
+            <li><a href="/notty-notes">Notty Notes</a></li>
+        
+            <li><a href="/overapi-cheatsheet">OverAPI</a></li>
+        
+            <li><a href="/raining-in-chrome">听雨</a></li>
+        
+        </ul>
+    </div>
+</div>
+
+<script src="/js/post.js" type="text/javascript"></script>
+
+
+    <!--*********************************************************-->
+    <!--****** 宝贝儿，看见这个时候，删掉下面的统计代码哦~ ******-->
+    <!--************* 再推荐下我的第一篇博客哦~~ ****************-->
+    <!--*********************************************************-->
+
+    <script type="text/javascript">
+        $(function(){
+            $('.home-follow').click(function(e){
+                e.preventDefault();
+
+                if($('.home-contact').is(':visible')){
+                    $('.home-contact').slideUp(100);
+                }else{
+                    $('.home-contact').slideDown(100);
+                }
+            });
+        })
+    </script>
+</body>
+</html>
