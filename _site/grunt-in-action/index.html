@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!--
+    * Author:         BeiYuu
+    -->
+    <meta charset="utf-8" />
+    <title>Grunt.js 在前端项目中的实战 | BeiYuu.com</title>
+    <meta name="author" content="BieYuu" />
+    <meta name="description" content="BeiYuu's Blog" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="/css/default.css" type="text/css" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="alternate" type="application/atom+xml" title="Recent Entries" href="/atom.xml" />
+    <script src="/js/jquery-1.7.1.min.js" type="text/javascript"></script>
+</head>
+<body>
+
+    <div class="home-menu">
+        <div class="home-icon-con">
+            <a class="home-menu-icon" href="/">BeiYuu</a>
+            <a class="home-follow" href="#" title="Contact Me">+</a>
+        </div>
+        <div class="home-contact">
+            <a href="http://weibo.com/beiyuu/" target="_blank" style="margin-left:-5px;"><img src="http://www.weibo.com/favicon.ico" alt="" width="25"/></a>
+            <a href="http://www.douban.com/people/beiyuu/" target="_blank" style="text-align:center;"><img src="http://www.douban.com/favicon.ico" alt="" width="22"/></a>
+            <a href="http://instagram.com/beiyuu/" target="_blank" style="text-align:right"><img src="http://d36xtkk24g8jdx.cloudfront.net/bluebar/00c6602/images/ico/favicon.ico" alt="" width="22"/></a>
+        </div>
+    </div>
+
+    <link rel="stylesheet" href="/js/prettify/prettify.css" />
+<style type="text/css">
+    body { background:#e8e8e8; }
+    @media screen and (max-width: 750px){
+        body { background:#fff; }
+    }
+    @media screen and (max-width: 1020px){
+        body { background:#fff; }
+    }
+</style>
+
+<div id="content">
+    <div class="entry">
+        <h1 class="entry-title"><a href="/grunt-in-action" title="Grunt.js 在前端项目中的实战">Grunt.js 在前端项目中的实战</a></h1>
+        <p class="entry-date">2013-07-17</p>
+        <h2>Grunt是什么？</h2>
+
+<p><a href="http://gruntjs.com/">Grunt</a>是一个基于JavaScript的任务运行工具。</p>
+
+<p>为什么要使用Grunt，简而言之是为了“自动”，用工具自动完成压缩、编译、单元测试、拼写检查等重复性工作。</p>
+
+<p>Grunt的社区壮大非常快，现在支持的模块有：<a href="http://coffeescript.org/">CoffeeScript</a>、 <a href="http://handlebarsjs.com/">handlerbars</a>、 <a href="http://jade-lang.com/">jade</a>、 <a href="http://www.jshint.com/">JSHint</a>、 <a href="http://lesscss.org/">Less</a>、 <a href="http://requirejs.org/">RequireJS</a>、 <a href="http://sass-lang.com/">Sass</a>、 <a href="http://learnboost.github.io/stylus/">stylus</a>等。</p>
+
+<h2>Grunt基本配置</h2>
+
+<p>Grunt及其插件都是用<a href="https://npmjs.org/">npm</a>管理的，npm是<a href="http://nodejs.org/">Node.js</a>的包管理程序，所以在使用Grunt之前，你需要先安装NodeJS。</p>
+
+<h3>安装CLI</h3>
+
+<p>首先需要在全局环境中安装Grunt command line interface (CLI)，在Mac等系统中需要sudo来执行下面的命令：</p>
+
+<pre><code>npm install -g grunt-cli
+</code></pre>
+
+<p>这会将<code>grunt</code>命令安装在系统path中，这样就可以从任何目录执行了。需要注意的是，安装了<code>grunt-cli</code>并没有安装任务管理工具。<code>CLI</code>的职责很简单，就是运行<code>Gruntfile</code>中定义的<code>Grunt</code>版本，这样你就可以在一台机器运行多个版本的Grunt。</p>
+
+<p>如果从0.3版本升级，需要先卸载旧版：</p>
+
+<pre><code>npm uninstall -g grunt
+</code></pre>
+
+<h2>已存在Grunt的项目</h2>
+
+<p>对于已经使用了Grunt的项目，搭建本地环境是非常方便的，只需要切换到该项目目录，然后执行：</p>
+
+<pre><code>npm install
+</code></pre>
+
+<p>再使用<code>grunt</code>命令运行Grunt即可。</p>
+
+<h2>新建Grunt项目</h2>
+
+<p>最基本的步骤就是给项目添加两个文件<code>package.json</code>和<code>Gruntfile</code>。</p>
+
+<ul>
+<li><code>package.json</code>：在这个文件里你可以列出项目所需的Grunt插件，npm会自动下载。</li>
+<li><code>Grunfile</code>：这个文件命名为<code>Gruntfile.js</code>或者<code>Gruntfile.coffee</code>，用来描述你所需要的grunt任务。</li>
+</ul>
+
+
+<h3>package.json</h3>
+
+<p><code>package.json</code>文件需要放置在项目的根目录，和代码一起提交。运行<code>npm install</code>命令，会安装<code>package.json</code>中列出的依赖插件的正确版本。</p>
+
+<p>创建<code>package.json</code>有以下几种办法：</p>
+
+<ul>
+    <li>大部分<code>grunt-init</code>模板，会创建项目相关的<code>package.json</code>文件</li>
+    <li><code>npm init</code>命令会创建基本的<code>package.json</code>文件</li>
+    <li>也可以下面这个范本创建，更多用法可以看<a href="https://npmjs.org/doc/json.html" target="_blank" class="external">specification</a></li>
+</ul>
+
+
+<pre><code>{
+    "name": "my-project-name",
+    "version": "0.1.0",
+    "devDependencies": {
+        "grunt": "~0.4.1",
+        "grunt-contrib-jshint": "~0.6.0",
+        "grunt-contrib-nodeunit": "~0.2.0",
+        "grunt-contrib-uglify": "~0.2.2"
+    }
+}
+</code></pre>
+
+<h3>安装Grunt和插件</h3>
+
+<p>对于已存在<code>package.json</code>文件的项目，最简单的安装方法就是<code>npm install &lt;module&gt; --save-dev</code>，例如：</p>
+
+<pre><code>npm install grunt --save-dev
+</code></pre>
+
+<p>这个命令会安装最新版的<code>grunt</code>，并且把对这个插件的依赖写入<code>package.json</code>。很方便。</p>
+
+<h2>Gruntfile</h2>
+
+<p>和<code>package.json</code>文件一样，<code>Gruntfile.js</code>或者<code>Gruntfile.coffee</code>需要放在根目录下和源码一起提交。</p>
+
+<p><code>Gruntfile</code>由以下几个部分组成：</p>
+
+<ul>
+    <li><code>wrapper</code>函数</li>
+    <li>项目和任务配置</li>
+    <li>加载Grunt插件和任务</li>
+    <li>自定义任务</li>
+</ul>
+
+
+<h3>示例Gruntfile</h3>
+
+<p>在下面这个例子中，项目信息引自<code>package.json</code>，grunt-contrib-uglify插件的<code>uglify</code>任务用来压缩js文件，并且根据项目的metadata生成一条注释。当grunt运行时，uglify任务会默认执行。</p>
+
+<pre><code>module.exports = function(grunt) {
+
+  // Project configuration.
+  grunt.initConfig({
+    pkg: grunt.file.readJSON('package.json'),
+    uglify: {
+      options: {
+        banner: '/*! &lt;%= pkg.name %&gt; &lt;%= grunt.template.today("yyyy-mm-dd") %&gt; */\n'
+      },
+      build: {
+        src: 'src/&lt;%= pkg.name %&gt;.js',
+        dest: 'build/&lt;%= pkg.name %&gt;.min.js'
+      }
+    }
+  });
+
+  // Load the plugin that provides the "uglify" task.
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+
+  // Default task(s).
+  grunt.registerTask('default', ['uglify']);
+
+};
+</code></pre>
+
+<p>这就是一个完整的<code>Gruntfile</code>，我们仔细研究下。</p>
+
+<h3>wrapper函数</h3>
+
+<p>每个<code>Gruntfile</code>（包括插件）使用这个默认的格式，你的所有的Grunt代码也必须写在这个函数中：</p>
+
+<pre><code>module.export = function(grunt){
+    //Do grunt-related things in here
+};
+</code></pre>
+
+<h3>项目和任务配置</h3>
+
+<p>大多Grunt的任务依赖于<a href="http://gruntjs.com/grunt#grunt.initconfig">grunt.initConfig</a>方法中定义的配置。</p>
+
+<p>在这个例子中，Grunt通过<code>grunt.file.readJSON('package.json')</code>引入了<code>package.json</code>中定义的Grunt配置。因为<code>&lt;% %&gt;</code>模板变量可以引用任何配置，所以像文件路径、文件列表这些内容应该存储在变量中，以减少重复。</p>
+
+<p>和其他任务一样，任务的配置需要和任务名字一样的变量，具体的参数可以查询各任务的文档。</p>
+
+<pre><code>// Project configuration.
+grunt.initConfig({
+  pkg: grunt.file.readJSON('package.json'),
+  uglify: {
+    options: {
+      banner: '/*! &lt;%= pkg.name %&gt; &lt;%= grunt.template.today("yyyy-mm-dd") %&gt; */\n'
+    },
+    build: {
+      src: 'src/&lt;%= pkg.name %&gt;.js',
+      dest: 'build/&lt;%= pkg.name %&gt;.min.js'
+    }
+  }
+});
+</code></pre>
+
+<h3>加载Grunt的插件和任务</h3>
+
+<p>很多常用的任务比如<a href="https://github.com/gruntjs/grunt-contrib-concat">concatenation</a>、 <a href="http://github.com/gruntjs/grunt-contrib-uglify">minification</a>、 <a href="https://github.com/gruntjs/grunt-contrib-jshint">linting</a>都有<a href="https://github.com/gruntjs">Grung插件</a>。只要在<code>package.json</code>中声明，然后通过<code>npm install</code>安装，就可以在<code>Gruntfile</code>中配置使用了。</p>
+
+<pre><code>// Load the plugin that provides the "uglify" task.
+grunt.loadNpmTasks('grunt-contrib-uglify');
+</code></pre>
+
+<p><code>grunt --help</code>可以查看所有可用的任务。</p>
+
+<h3>自定义任务</h3>
+
+<p>你可以配置让Grunt运行一个或多个默认任务。在例子中，运行<code>grunt</code>不带任何参数就会执行<code>uglify</code>任务。这和<code>grunt uglify</code>或者<code>grunt default</code>是一样的效果。数组的长度任意。</p>
+
+<pre><code>// Default task(s).
+grunt.registerTask('default', ['uglify']);
+</code></pre>
+
+<p>如果你需要的任务并没有插件提供，那么也可以自定义，自定义的任务可以不写任务配置</p>
+
+<pre><code>module.exports = function(grunt) {
+
+  // A very basic default task.
+  grunt.registerTask('default', 'Log some stuff.', function() {
+    grunt.log.write('Logging some stuff...').ok();
+  });
+
+};
+</code></pre>
+
+<p>自定义的任务也不必一定写在<code>Gruntfile</code>中，也可以定义在外部的<code>.js</code>文件中，然后通过<a href="http://gruntjs.com/grunt#grunt.loadtasks">grunt.loadTasks</a>来加载。</p>
+
+<h2>实战</h2>
+
+<p>grunt插件中有contrib前缀的是Grunt团队自行开发的插件，也是推荐使用的，下面挑选几个在前端项目中必用的插件，在实际例子中介绍一下使用方法。</p>
+
+<h3>grunt-contrib-compass</h3>
+
+<p><a href="http://compass-style.org/">Compass</a>是<a href="http://sass-lang.com/">SASS</a>的一个框架，就像jQuery之于Javascript、Rails之于Ruby。具体的用法可以参考阮一峰的这两篇Blog:</p>
+
+<ul>
+    <li><a href="http://www.ruanyifeng.com/blog/2012/06/sass.html">SASS用法指南</a></li>
+    <li><a href="http://www.ruanyifeng.com/blog/2012/11/compass.html">Compass用法指南</a></li>
+</ul>
+
+
+<p>首先，安装<a href="https://npmjs.org/package/grunt-contrib-compass">grunt-contrib-compass</a></p>
+
+<pre><code>npm install grunt-contrib-compass --save-dev
+</code></pre>
+
+<p>如前所述，<code>--save-dev</code>可以在安装插件的过程中，将对这个插件的依赖自动写入<code>package.json</code>文件中，方便。</p>
+
+<p>Compass并没有暴露所有的设置给Grunt，如果有别的需要，可以在config里面指定<code>config.rb</code>给Compass编译使用。看一个配置的例子：</p>
+
+<pre><code>module.exports = function(grunt){
+    grunt.initConfig({
+      compass: {                  // compass任务
+        dist: {                   // 一个子任务
+          options: {              // 任务的设置
+            sassDir: 'sass',
+            cssDir: 'css',
+            environment: 'production'
+          }
+        },
+        dev: {                    // 另一个子任务
+          options: {
+            sassDir: 'sass',
+            cssDir: 'style'
+          }
+        }
+      }
+    });
+
+    grunt.loadNpmTasks('grunt-contrib-compass');
+
+    grunt.registerTask('default', ['compass']);
+}
+</code></pre>
+
+<p>如果要使用外部文件的配置：</p>
+
+<pre><code>grunt.initConfig({
+  compass: {
+    dist: {
+      options: {
+        config: 'config/config.rb'
+      }
+    }
+  }
+});
+</code></pre>
+
+<h3>grunt-contrib-concat</h3>
+
+<p><a href="https://npmjs.org/package/grunt-contrib-concat">grunt-contrib-concat</a>是一个合并文件的插件，可以将多个css或js文件合并为一个，以节省链接数。同样的，安装：</p>
+
+<pre><code>npm install grunt-contrib-concat --save-dev
+</code></pre>
+
+<p>这个插件有一下几个常用配置：</p>
+
+<ul>
+    <li><code>seperator</code>：被合并的文件会用这个参数来join，例如你在合并压缩后的js文件时，可以加个<code>;</code>防止出错</li>
+    <li><code>banner</code>：在合并后的文件头部加一些额外信息</li>
+    <li><code>footer</code>：在合并后的文件尾部加一些额外信息</li>
+</ul>
+
+
+<p>再看一下用法：</p>
+
+<pre><code>grunt.initConfig({
+  pkg: grunt.file.readJSON('package.json'),
+  concat: {
+    options: {                                                      //配置
+      stripBanners: true,
+      banner: '/*! &lt;%= pkg.name %&gt; - v&lt;%= pkg.version %&gt; - ' +      //添加自定义的banner
+        '&lt;%= grunt.template.today("yyyy-mm-dd") %&gt; */'
+    },
+    dist: {                                                         //任务
+        src: ['src/intro.js', 'src/project.js', 'src/outro.js'],    //源目录文件
+        dest: 'dist/built.js'                                       //合并后的文件
+    },
+    basic_and_extras: {                                             //另一个任务
+        files: {                                                    //另一种更简便的写法
+            'dist/basic.js': ['src/main.js'],
+            'dist/with_extras.js': ['src/main.js', 'src/extras.js']
+        }
+    }
+  }
+});
+
+grunt.loadNpmTasks('grunt-contrib-concat');
+</code></pre>
+
+<p>最后在<code>default</code>事件中添加<code>concat</code>就会默认执行了。</p>
+
+<h3>grunt-contrib-uglify</h3>
+
+<p><a href="https://npmjs.org/package/grunt-contrib-uglify">grunt-contrib-uglify</a>用来压缩js文件，用法与<code>concat</code>类似，先安装：</p>
+
+<pre><code>npm install grunt-contrib-uglify --save-dev
+</code></pre>
+
+<p>然后写入相应的配置：</p>
+
+<pre><code>grunt.initConfig({
+  uglify: {
+    options: {
+      banner: '/*! This is uglify test - ' +
+        '&lt;%= grunt.template.today("yyyy-mm-dd") %&gt; */'
+    },
+    app_task: {
+      files: {
+        'dist/app.min.js': ['js/app.js', 'js/render.js']
+      }
+    }
+  }
+});
+
+grunt.loadNpmTasks('grunt-contrib-uglify');
+</code></pre>
+
+<p>恩，经过如此处理，你的js代码已经丑陋到无法直视了。</p>
+
+<h3>grunt-contrib-watch</h3>
+
+<p><a href="https://npmjs.org/package/grunt-contrib-watch">grunt-contrib-watch</a>是开发必备插件，用来监控文件的修改，然后自动运行grunt任务，省去一遍遍手动执行Grunt命令，安装照旧：</p>
+
+<pre><code>npm install grunt-contrib-watch --save-dev
+</code></pre>
+
+<p>使用watch插件时，需要注意一点，被watch的文件，可以分开写，这样可以提高watch的性能，不用每次把没修改的文件也执行一遍任务，看看例子：</p>
+
+<pre><code>grunt.initConfig({
+  watch: {
+    css: {
+      files: ['public/scss/*.scss'],
+      tasks: ['compass'],
+      options: {
+        // Start a live reload server on the default port 35729
+        livereload: true,
+      },
+    },
+    another: {
+      files: ['lib/*.js'],
+      tasks: ['anothertask'],
+      options: {
+        // Start another live reload server on port 1337
+        livereload: 1337,
+      },
+    }
+  }
+});
+
+grunt.loadNpmTasks('grunt-contrib-watch');
+</code></pre>
+
+<p>然后运行<code>grunt watch</code>命令，修改文件，就会看到设定的任务执行了。</p>
+
+<h2>源码</h2>
+
+<p>Grunt的基本使用就是这些了，当然还有一些<a href="http://gruntjs.com/project-scaffolding">搭建脚手架</a>等等的功能，等待你自己去学习使用吧，更多的<a href="http://gruntjs.com/plugins/">Grunt 插件</a>也等待你去发现。</p>
+
+<p>贴出来源码，整体看一下：</p>
+
+<h3>package.json</h3>
+
+<pre><code>{
+  "name": "Grunt-in-action",
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-compass": "~0.3.0",
+    "grunt-contrib-watch": "~0.4.4",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-uglify": "~0.2.2"
+  }
+}
+</code></pre>
+
+<h3>Gruntfile.js</h3>
+
+<pre><code>module.exports = function(grunt){
+    grunt.initConfig({
+        compass: {                  // Task
+            dist: {                   // Target
+                options: {              // Target options
+                    sassDir: 'sass',
+                    cssDir: 'css',
+                    environment: 'production'
+                }
+            },
+            dev: {                    // Another target
+                options: {
+                    sassDir: 'sass',
+                    cssDir: 'style'
+                }
+            }
+        },
+
+        concat: {
+            options: {                                       //配置
+                stripBanners:true,
+                banner: '/*! This is the grunt test ' +      //添加自定义的banner
+                '&lt;%= grunt.template.today("yyyy-mm-dd") %&gt; */'
+            },
+            basic: {                                         //另一个任务
+                files: {                                     //另一种更简便的写法
+                    'dist/style.css': ['style/screen.css','style/ie.css','style/print.css']
+                }
+            }
+        },
+
+        uglify: {
+            options: {
+                banner: '/*! This is uglify test - ' +
+                '&lt;%= grunt.template.today("yyyy-mm-dd") %&gt; */'
+            },
+            app_task: {
+                files: {
+                    'dist/app.min.js': ['js/app.js', 'js/render.js']
+                }
+            }
+        },
+
+        watch: {
+            css: {
+                files: ['sass/*.scss'],
+                tasks: ['compass', 'concat']
+            },
+            another: {
+                files: ['js/*.js'],
+                tasks: ['uglify']
+            }
+        }
+    });
+
+    grunt.loadNpmTasks('grunt-contrib-compass');
+    grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-watch');
+
+    grunt.registerTask('default', ['compass','concat', 'uglify']);
+}
+</code></pre>
+
+
+        <div id="disqus_container">
+            <div style="margin-bottom:20px" class="right">
+                <script type="text/javascript" charset="utf-8">
+                (function(){
+                  var _w = 86 , _h = 16;
+                  var param = {
+                    url:location.href,
+                    type:'6',
+                    count:'', /**是否显示分享数，1显示(可选)*/
+                    appkey:'', /**您申请的应用appkey,显示分享来源(可选)*/
+                    title:'', /**分享的文字内容(可选，默认为所在页面的title)*/
+                    pic:'', /**分享图片的路径(可选)*/
+                    ralateUid:'1855270953', /**关联用户的UID，分享微博会@该用户(可选)*/
+                    language:'zh_cn', /**设置语言，zh_cn|zh_tw(可选)*/
+                    rnd:new Date().valueOf()
+                  }
+                  var temp = [];
+                  for( var p in param ){
+                    temp.push(p + '=' + encodeURIComponent( param[p] || '' ) )
+                  }
+                  document.write('<iframe allowTransparency="true" frameborder="0" scrolling="no" src="http://hits.sinajs.cn/A1/weiboshare.html?' + temp.join('&') + '" width="'+ _w+'" height="'+_h+'"></iframe>')
+                })()
+                </script>
+            </div>
+            <a href="#" class="comment" onclick="return false;">点击查看评论</a>
+            <div id="disqus_thread"></div>
+        </div>
+    </div>
+
+    <div class="sidenav">
+        <iframe width="100%" height="75" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=75&fansRow=2&ptype=1&speed=0&skin=5&isTitle=0&noborder=0&isWeibo=0&isFans=0&uid=1855270953&verifier=375b89d6&dpc=1"></iframe>
+    </div>
+
+    <div class="sidenav">
+        <h2>Blog</h2>
+        <ul class="artical-list">
+        
+            <li><a href="/css3-animation">CSS3动画详解</a></li>
+        
+            <li><a href="/grunt-in-action">Grunt.js 在前端项目中的实战</a></li>
+        
+            <li><a href="/readable-code">编写可读代码的艺术</a></li>
+        
+            <li><a href="/religion-basic">宗教基本知识</a></li>
+        
+            <li><a href="/git-vim-tutorial">Git时代的VIM不完全使用教程</a></li>
+        
+            <li><a href="/backbone-js-chrome-extension">使用Backbone.js开发Chrome便签插件</a></li>
+        
+            <li><a href="/buy-guitar">如何选择与购买吉他</a></li>
+        
+            <li><a href="/github-pages">使用Github Pages建独立博客</a></li>
+        
+            <li><a href="/why-blog">我为什么写博客？</a></li>
+        
+        </ul>
+
+        <h2>Opinion</h2>
+        <ul class="artical-list">
+        
+            <li><a href="/douban-fm">豆瓣FM(iOS 3.0)使用体会</a></li>
+        
+            <li><a href="/jobs-interview">史蒂夫·乔布斯：遗失的访谈</a></li>
+        
+            <li><a href="/40-ama-55-grammy">40届全美音乐奖和55届格莱美颁奖演出观感</a></li>
+        
+            <li><a href="/build-facebook">只有好的棋手才会走运</a></li>
+        
+            <li><a href="/bad-list-design">令人焦虑的列表设计</a></li>
+        
+            <li><a href="/about-simplify">胡言乱语说简单</a></li>
+        
+            <li><a href="/auto-edit-bar">随内容滚动隐藏的工具栏</a></li>
+        
+            <li><a href="/side-slide">如果侧滑成为APP标配</a></li>
+        
+            <li><a href="/needs-video">谈谈刚需和360影视</a></li>
+        
+        </ul>
+
+        <h2>Project</h2>
+        <ul class="artical-list">
+        
+            <li><a href="/tabby">Tabby</a></li>
+        
+            <li><a href="/notty-notes">Notty Notes</a></li>
+        
+            <li><a href="/overapi-cheatsheet">OverAPI</a></li>
+        
+            <li><a href="/raining-in-chrome">听雨</a></li>
+        
+        </ul>
+    </div>
+</div>
+
+<script src="/js/post.js" type="text/javascript"></script>
+
+
+    <!--*********************************************************-->
+    <!--****** 宝贝儿，看见这个时候，删掉下面的统计代码哦~ ******-->
+    <!--************* 再推荐下我的第一篇博客哦~~ ****************-->
+    <!--*********************************************************-->
+
+    <script type="text/javascript">
+        $(function(){
+            $('.home-follow').click(function(e){
+                e.preventDefault();
+
+                if($('.home-contact').is(':visible')){
+                    $('.home-contact').slideUp(100);
+                }else{
+                    $('.home-contact').slideDown(100);
+                }
+            });
+        })
+    </script>
+</body>
+</html>

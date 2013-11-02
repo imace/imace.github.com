@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!--
+    * Author:         BeiYuu
+    -->
+    <meta charset="utf-8" />
+    <title>BeiYuu.com</title>
+    <meta name="author" content="BieYuu" />
+    <meta name="description" content="BeiYuu's Blog" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="/css/default.css" type="text/css" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="alternate" type="application/atom+xml" title="Recent Entries" href="/atom.xml" />
+    <script src="/js/jquery-1.7.1.min.js" type="text/javascript"></script>
+</head>
+<body>
+
+    <div class="home-menu">
+        <div class="home-icon-con">
+            <a class="home-menu-icon" href="/">BeiYuu</a>
+            <a class="home-follow" href="#" title="Contact Me">+</a>
+        </div>
+        <div class="home-contact">
+            <a href="http://weibo.com/beiyuu/" target="_blank" style="margin-left:-5px;"><img src="http://www.weibo.com/favicon.ico" alt="" width="25"/></a>
+            <a href="http://www.douban.com/people/beiyuu/" target="_blank" style="text-align:center;"><img src="http://www.douban.com/favicon.ico" alt="" width="22"/></a>
+            <a href="http://instagram.com/beiyuu/" target="_blank" style="text-align:right"><img src="http://d36xtkk24g8jdx.cloudfront.net/bluebar/00c6602/images/ico/favicon.ico" alt="" width="22"/></a>
+        </div>
+    </div>
+
+    <div class="index-content blog">
+    <div class="section">
+        <ul class="artical-cate">
+            <li class="on"><a href="/"><span>Blog</span></a></li>
+            <li style="text-align:center"><a href="/opinion"><span>Opinion</span></a></li>
+            <li style="text-align:right"><a href="/project"><span>Project</span></a></li>
+        </ul>
+
+        <div class="cate-bar"><span id="cateBar"></span></div>
+
+        <ul class="artical-list">
+        
+            <li>
+                <h2><a href="/css3-animation">CSS3动画详解</a></h2>
+                <div class="title-desc">随着低版本IE份额下降，以及移动端流量的增长，在项目中也可以大胆使用CSS3动画来增强体验和提高产品的优雅程度，对那些不支持的浏览器也不用再费心去做更多兼容，所以，我们来研究下CSS3动画，到底应该怎么用。</div>
+            </li>
+        
+            <li>
+                <h2><a href="/grunt-in-action">Grunt.js 在前端项目中的实战</a></h2>
+                <div class="title-desc">在前端发展越来越需要工具的今天，Grunt.js这样的任务管理工具必不可少，一些流行的前端项目，也早已经用上了这个强大的工具，为项目的发布提供了不少方便，感谢这些牛人们做出的伟大贡献，如何在自己的项目中使用，就是这篇blog要研究的问题。</div>
+            </li>
+        
+            <li>
+                <h2><a href="/readable-code">编写可读代码的艺术</a></h2>
+                <div class="title-desc">将《The Art of Readable Code》的读书笔记和一点自己的认识总结起来写就这么一篇博客，强烈推荐此书。</div>
+            </li>
+        
+            <li>
+                <h2><a href="/religion-basic">宗教基本知识</a></h2>
+                <div class="title-desc">关于几个主要宗教的一些基本概念整理，了解一下，可以更有文化一点。</div>
+            </li>
+        
+            <li>
+                <h2><a href="/git-vim-tutorial">Git时代的VIM不完全使用教程</a></h2>
+                <div class="title-desc">在Git流行的时代，VIM的生态环境也有了长足的进步，令人感动。</div>
+            </li>
+        
+            <li>
+                <h2><a href="/backbone-js-chrome-extension">使用Backbone.js开发Chrome便签插件</a></h2>
+                <div class="title-desc">没有合适的插件，就只好自己动手了，同时也用Backbone.js来练练手。</div>
+            </li>
+        
+            <li>
+                <h2><a href="/buy-guitar">如何选择与购买吉他</a></h2>
+                <div class="title-desc">选择一把属于自己的吉他，并不是一件简单的事情，方方面面都需要注意到才会买到满意的吉他。</div>
+            </li>
+        
+            <li>
+                <h2><a href="/github-pages">使用Github Pages建独立博客</a></h2>
+                <div class="title-desc">Github本身就是不错的代码社区，他也提供了一些其他的服务，比如Github Pages，使用它可以很方便的建立自己的独立博客，并且免费。</div>
+            </li>
+        
+            <li>
+                <h2><a href="/why-blog">我为什么写博客？</a></h2>
+                <div class="title-desc">写博客这个这么古老的行为，还有必要拿出来说吗，我看有。</div>
+            </li>
+        
+        </ul>
+    </div>
+    <div class="aside">
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    $(function(){
+        function animateBar($item,noAni){
+            var spanLeft = $item.find('span').offset().left;
+            var conLeft = $item.parent().offset().left;
+            var left = spanLeft - conLeft;
+            var width = $item.find('span').width() + 8;
+
+            if(noAni){
+                $('#cateBar').css({left:left,width:width})
+            }else{
+                $('#cateBar').stop().animate({left:left,width:width},300)
+            }
+        }
+
+        var waitForFinalEvent = (function () {
+            var timers = {};
+            return function (callback, ms, uniqueId) {
+                if (!uniqueId) {
+                    uniqueId = "Don't call this twice without a uniqueId";
+                }
+                if (timers[uniqueId]) {
+                    clearTimeout (timers[uniqueId]);
+                }
+                timers[uniqueId] = setTimeout(callback, ms);
+            };
+        })();
+
+        $('.artical-cate li').mouseenter(function(){
+            animateBar($(this));
+        }).mouseleave(function(){
+            animateBar($('.artical-cate .on'));
+        });
+
+        $(window).resize(function(e){
+            waitForFinalEvent(function(){
+                animateBar($('.artical-cate .on'));
+            })
+        })
+        animateBar($('.artical-cate .on'),true);
+    });
+</script>
+
+
+    <!--*********************************************************-->
+    <!--****** 宝贝儿，看见这个时候，删掉下面的统计代码哦~ ******-->
+    <!--************* 再推荐下我的第一篇博客哦~~ ****************-->
+    <!--*********************************************************-->
+
+    <script type="text/javascript">
+        $(function(){
+            $('.home-follow').click(function(e){
+                e.preventDefault();
+
+                if($('.home-contact').is(':visible')){
+                    $('.home-contact').slideUp(100);
+                }else{
+                    $('.home-contact').slideDown(100);
+                }
+            });
+        })
+    </script>
+</body>
+</html>
